@@ -17,7 +17,7 @@ namespace AppEvents
     {
         public static EventClient Current = new EventClient();
 
-
+        private IEventStorageProvider _storageProvider;
         private EventStore _eventStore;
         private List<RuleSet> _rules;
 
@@ -38,6 +38,20 @@ namespace AppEvents
             {
                 _eventStore = eventStore;
             }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Loads the Storage Provider and attempts call its LoadEventStore() function
+        /// </summary>
+        /// <param name="storageProvider">An instance of an IEventStorageProvider</param>
+        /// <returns></returns>
+        public EventClient FromStorage(IEventStorageProvider storageProvider)
+        {
+            _storageProvider = storageProvider;
+            //try getting the EventStore
+            _eventStore = _storageProvider.LoadEventStore();
 
             return this;
         }
@@ -119,6 +133,17 @@ namespace AppEvents
                     _eventStore.UserRules.Add(new UserRule { RuleName = r.Name, Executed = DateTime.Now });
                 }
             }
+        }
+
+        //Saves the EventStore if there is a Storage Provider set
+        public EventClient SaveEventStore()
+        {
+            if (_storageProvider != null)
+            {
+                _storageProvider.SaveEventStore(_eventStore);
+            }
+
+            return this;
         }
 
         /// <summary>

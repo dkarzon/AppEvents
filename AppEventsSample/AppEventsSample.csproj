@@ -50,6 +50,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Newtonsoft.Json.WindowsPhone">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.2\lib\sl3-wp\Newtonsoft.Json.WindowsPhone.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -60,6 +63,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="JsonStorageProvider.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -76,6 +80,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>

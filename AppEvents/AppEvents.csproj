@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\EventClient.cs" />
+    <Compile Include="Client\IEventStorageProvider.cs" />
     <Compile Include="Client\IHideObjectMembers.cs" />
     <Compile Include="Entities\UserEvent.cs" />
     <Compile Include="Entities\EventStore.cs" />
