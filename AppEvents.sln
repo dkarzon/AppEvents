@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppEvents", "AppEvents\AppEvents.csproj", "{DEA02C5F-6725-47A2-9667-1CFB00E1C979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppEvents.Tests", "AppEvents.Tests\AppEvents.Tests.csproj", "{E96EB67F-8ADA-437B-B4A0-A958A940A0C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{114AE742-9C8C-4515-A113-5864ABF1DC08}"
+	ProjectSection(SolutionItems) = preProject
+		AppEvents.vsmdi = AppEvents.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppEventsSample", "AppEventsSample\AppEventsSample.csproj", "{BA6A3E8A-BF8C-4C28-8C21-2D92785B95EC}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = AppEvents.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEA02C5F-6725-47A2-9667-1CFB00E1C979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEA02C5F-6725-47A2-9667-1CFB00E1C979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEA02C5F-6725-47A2-9667-1CFB00E1C979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEA02C5F-6725-47A2-9667-1CFB00E1C979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E96EB67F-8ADA-437B-B4A0-A958A940A0C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E96EB67F-8ADA-437B-B4A0-A958A940A0C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E96EB67F-8ADA-437B-B4A0-A958A940A0C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E96EB67F-8ADA-437B-B4A0-A958A940A0C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA6A3E8A-BF8C-4C28-8C21-2D92785B95EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA6A3E8A-BF8C-4C28-8C21-2D92785B95EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA6A3E8A-BF8C-4C28-8C21-2D92785B95EC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BA6A3E8A-BF8C-4C28-8C21-2D92785B95EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA6A3E8A-BF8C-4C28-8C21-2D92785B95EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA6A3E8A-BF8C-4C28-8C21-2D92785B95EC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
