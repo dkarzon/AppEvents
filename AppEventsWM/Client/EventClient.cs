@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AppEvents
+namespace AppEventsWM
 {
     public class EventClient : IHideObjectMembers
     {
-        public static EventClient Current;
+        public static EventClient Current = new EventClient();
 
         private IEventStorageProvider _storageProvider;
         private EventStore _eventStore;
@@ -16,32 +17,6 @@ namespace AppEvents
         {
             _rules = new List<RuleSet>();
             _eventStore = new EventStore();
-        }
-
-        /// <summary>
-        /// Sets the Current instance of the EventClient
-        /// </summary>
-        /// <returns></returns>
-        public static EventClient New()
-        {
-            Current = new EventClient();
-
-            Current.FromStorage(new JsonStorageProvider());
-
-            return Current;
-        }
-
-        /// <summary>
-        /// Sets the Current instance of the EventClient
-        /// </summary>
-        /// <returns></returns>
-        public static EventClient New<T>() where T : IEventStorageProvider, new()
-        {
-            Current = new EventClient();
-
-            Current.FromStorage(new T());
-
-            return Current;
         }
 
         /// <summary>
@@ -69,10 +44,6 @@ namespace AppEvents
             _storageProvider = storageProvider;
             //try getting the EventStore
             _eventStore = _storageProvider.LoadEventStore();
-            if (_eventStore == null)
-            {
-                _eventStore = new EventStore();
-            }
 
             return this;
         }
@@ -94,18 +65,13 @@ namespace AppEvents
         /// <param name="eventName">The event name to fire</param>
         /// <param name="runRules">Weather or not the Rules should be run</param>
         /// <returns></returns>
-        public EventClient Fire(string eventName, bool runRules = true, bool saveStore = true)
+        public EventClient Fire(string eventName, bool runRules)
         {
             _eventStore.Fire(eventName);
 
             if (runRules)
             {
                 RunRules();
-            }
-
-            if (saveStore)
-            {
-                SaveEventStore();
             }
 
             return this;

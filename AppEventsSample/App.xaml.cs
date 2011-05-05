@@ -52,7 +52,7 @@ namespace AppEventsSample
             // Phone-specific initialization
             InitializePhoneApplication();
 
-            AppEvents.EventClient.Current
+            AppEvents.EventClient.New()
                 .Add(
                     RuleSet.When("testrule1", el => el.Any(e => e.Name == "testevent1"))
                     .Do(r =>
@@ -60,7 +60,12 @@ namespace AppEventsSample
                     ))
                 .Add(
                     RuleSet.When("testrule2", el => el.Any(e => e.Name == "testevent2" && e.Occurrrences.Count > 2))
-                    .Do(r => 
+                    .Do(r =>
+                        MessageBox.Show(r.Name)
+                    ))
+                .Add(
+                    RuleSet.When("testrule3", el => el.Any(e => e.Name == "testevent3"))
+                    .Do(r =>
                         MessageBox.Show(r.Name)
                     ));
         }

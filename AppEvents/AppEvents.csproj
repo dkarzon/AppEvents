@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json.WindowsPhone, Version=4.0.2.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.2\lib\sl3-wp\Newtonsoft.Json.WindowsPhone.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -51,10 +54,10 @@
     <Compile Include="Client\EventClient.cs" />
     <Compile Include="Client\IEventStorageProvider.cs" />
     <Compile Include="Client\IHideObjectMembers.cs" />
+    <Compile Include="Client\JsonStorageProvider.cs" />
     <Compile Include="Entities\UserEvent.cs" />
     <Compile Include="Entities\EventStore.cs" />
     <Compile Include="Entities\RuleSet.cs" />
-    <Compile Include="Entities\RuleType.cs" />
     <Compile Include="Entities\UserEventList.cs" />
     <Compile Include="Entities\UserRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

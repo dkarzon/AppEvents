@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Text;
 
-namespace AppEvents
+namespace AppEventsWM
 {
     public interface IEventStorageProvider
     {

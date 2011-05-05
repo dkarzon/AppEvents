@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Text;
 using System.ComponentModel;
 
-namespace AppEvents
+namespace AppEventsWM
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IHideObjectMembers
