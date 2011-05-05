@@ -29,6 +29,12 @@ namespace AppEvents
             Operation = op;
         }
 
+        /// <summary>
+        /// Creates a RuleSet with the given name and operation
+        /// </summary>
+        /// <param name="ruleName">Name of the Rule (Used for tracking)</param>
+        /// <param name="op">Operation to determine when the rules action should be executed</param>
+        /// <returns></returns>
         public static RuleSet When(string ruleName, Func<UserEventList, bool> op)
         {
             var ruleset = new RuleSet(ruleName, op);
@@ -36,6 +42,11 @@ namespace AppEvents
             return ruleset;
         }
 
+        /// <summary>
+        /// Adds the action to the RuleSet for the Client to execute
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public RuleSet Do(Action<RuleSet> action)
         {
             Action = action;
