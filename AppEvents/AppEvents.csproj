@@ -57,7 +57,7 @@
     <Compile Include="Client\JsonStorageProvider.cs" />
     <Compile Include="Entities\UserEvent.cs" />
     <Compile Include="Entities\EventStore.cs" />
-    <Compile Include="Entities\RuleSet.cs" />
+    <Compile Include="Entities\Rule.cs" />
     <Compile Include="Entities\UserEventList.cs" />
     <Compile Include="Entities\UserRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

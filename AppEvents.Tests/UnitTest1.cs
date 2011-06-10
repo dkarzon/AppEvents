@@ -65,12 +65,12 @@ namespace AppEvents.Tests
             AppEvents.EventClient.Current.LoadHistory(eventStore)
                 //Add a rate-app Rule
                 .Add(
-                    RuleSet.When("rate-app",
+                    Rule.When("rate-app",
                     el => el.Any(e => e.Name == "viewreport" && e.Occurrrences.Count > 1)
                         && el.Any(e => e.Name == "addedfavorite" && e.Occurrrences.Count > 1))
                     .Do((r) => RateApp()))
                 //Add a Hi5 Rule
-                .Add(RuleSet.When("Hi5",
+                .Add(Rule.When("Hi5",
                     el => el.Any(e => e.Name == "LiveTileOn" && e.Occurrrences.Max() > DateTime.Today))
                     .Do(r => Hi5(r))
             );
@@ -90,7 +90,7 @@ namespace AppEvents.Tests
         {
         }
 
-        private void Hi5(RuleSet rule)
+        private void Hi5(Rule rule)
         {
 
         }

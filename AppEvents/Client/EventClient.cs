@@ -10,11 +10,11 @@ namespace AppEvents
 
         private IEventStorageProvider _storageProvider;
         private EventStore _eventStore;
-        private List<RuleSet> _rules;
+        private List<Rule> _rules;
 
         private EventClient()
         {
-            _rules = new List<RuleSet>();
+            _rules = new List<Rule>();
             _eventStore = new EventStore();
         }
 
@@ -82,7 +82,7 @@ namespace AppEvents
         /// </summary>
         /// <param name="ruleSet">The RuleSet to Add</param>
         /// <returns></returns>
-        public EventClient Add(RuleSet ruleSet)
+        public EventClient Add(Rule ruleSet)
         {
             _rules.Add(ruleSet);
             return this;
@@ -146,7 +146,7 @@ namespace AppEvents
         /// INTERNAL - Runs the specified rule
         /// </summary>
         /// <param name="r">RuleSet to run</param>
-        private void RunRule(RuleSet r)
+        private void RunRule(Rule r)
         {
             //Make sure it hasn't been run before
             if (!_eventStore.UserRules.Any(ur => ur.RuleName == r.Name))

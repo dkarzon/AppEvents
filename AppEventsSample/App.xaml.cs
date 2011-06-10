@@ -13,6 +13,8 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using AppEvents;
+using AppEventsSample.Helpers;
+using AppEventsSample.ViewModels;
 
 namespace AppEventsSample
 {
@@ -23,6 +25,8 @@ namespace AppEventsSample
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
+
+        public SampleViewModel ViewModel { get; set; }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -52,19 +56,23 @@ namespace AppEventsSample
             // Phone-specific initialization
             InitializePhoneApplication();
 
+            DispatcherHelper.Initialize();
+
+            ViewModel = new SampleViewModel();
+
             AppEvents.EventClient.New()
                 .Add(
-                    RuleSet.When("testrule1", el => el.Any(e => e.Name == "testevent1"))
+                    Rule.When("testrule1", el => el.Any(e => e.Name == "testevent1"))
                     .Do(r =>
                         MessageBox.Show(r.Name)
                     ))
                 .Add(
-                    RuleSet.When("testrule2", el => el.Any(e => e.Name == "testevent2" && e.Occurrrences.Count > 2))
+                    Rule.When("testrule2", el => el.Any(e => e.Name == "testevent2" && e.Occurrrences.Count > 2))
                     .Do(r =>
                         MessageBox.Show(r.Name)
                     ))
                 .Add(
-                    RuleSet.When("testrule3", el => el.Any(e => e.Name == "testevent3"))
+                    Rule.When("testrule3", el => el.Any(e => e.Name == "testevent3"))
                     .Do(r =>
                         MessageBox.Show(r.Name)
                     ));
