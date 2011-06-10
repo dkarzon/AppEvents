@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Windows.Threading;
+using AppEventsSample.Helpers;
 
 namespace AppEventsSample.ViewModels
 {
