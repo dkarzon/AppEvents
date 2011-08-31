@@ -60,7 +60,7 @@ namespace AppEventsSample
 
             ViewModel = new SampleViewModel();
 
-            AppEvents.EventClient.New()
+            AppEvents.AppEventsClient.New()
                 .Add(
                     Rule.When("testrule1", el => el.Any(e => e.Name == "testevent1"))
                     .Do(r =>

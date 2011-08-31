@@ -4,15 +4,15 @@ using System.Linq;
 
 namespace AppEvents
 {
-    public class EventClient : IHideObjectMembers
+    public class AppEventsClient : IHideObjectMembers
     {
-        public static EventClient Current;
+        public static AppEventsClient Current;
 
         private IEventStorageProvider _storageProvider;
         private EventStore _eventStore;
         private List<Rule> _rules;
 
-        private EventClient()
+        private AppEventsClient()
         {
             _rules = new List<Rule>();
             _eventStore = new EventStore();
@@ -22,9 +22,9 @@ namespace AppEvents
         /// Sets the Current instance of the EventClient
         /// </summary>
         /// <returns></returns>
-        public static EventClient New()
+        public static AppEventsClient New()
         {
-            Current = new EventClient();
+            Current = new AppEventsClient();
 
             Current.FromStorage(new JsonStorageProvider());
 
@@ -35,11 +35,48 @@ namespace AppEvents
         /// Sets the Current instance of the EventClient
         /// </summary>
         /// <returns></returns>
-        public static EventClient New<T>() where T : IEventStorageProvider, new()
+        public static AppEventsClient New<T>() where T : IEventStorageProvider, new()
         {
-            Current = new EventClient();
+            Current = new AppEventsClient();
 
             Current.FromStorage(new T());
+
+            return Current;
+        }
+
+        /// <summary>
+        /// Creates an instance of the AppEventsClient with a rule to add to the listener
+        /// </summary>
+        /// <param name="newRule">An event Rule to add</param>
+        /// <returns></returns>
+        public static AppEventsClient New(Rule newRule)
+        {
+            if (Current == null)
+            {
+                Current = new AppEventsClient();
+                Current.FromStorage(new JsonStorageProvider());
+            }
+
+            Current.Add(newRule);
+
+            return Current;
+        }
+
+        /// <summary>
+        /// Creates an instance of the AppEventsClient with a rule to add to the listener and setting a storage provider
+        /// </summary>
+        /// <typeparam name="T">Storage Provider</typeparam>
+        /// <param name="newRule">An event Rule to add</param>
+        /// <returns></returns>
+        public static AppEventsClient New<T>(Rule newRule) where T : IEventStorageProvider, new()
+        {
+            if (Current == null)
+            {
+                Current = new AppEventsClient();
+                Current.FromStorage(new T());
+            }
+
+            Current.Add(newRule);
 
             return Current;
         }
@@ -49,7 +86,7 @@ namespace AppEvents
         /// </summary>
         /// <param name="eventStore">The event store loaded from storage</param>
         /// <returns></returns>
-        public EventClient LoadHistory(EventStore eventStore)
+        public AppEventsClient LoadStore(EventStore eventStore)
         {
             if (eventStore != null)
             {
@@ -64,7 +101,7 @@ namespace AppEvents
         /// </summary>
         /// <param name="storageProvider">An instance of an IEventStorageProvider</param>
         /// <returns></returns>
-        public EventClient FromStorage(IEventStorageProvider storageProvider)
+        public AppEventsClient FromStorage(IEventStorageProvider storageProvider)
         {
             _storageProvider = storageProvider;
             //try getting the EventStore
@@ -80,11 +117,11 @@ namespace AppEvents
         /// <summary>
         /// Adds a new Ruleset to the event client
         /// </summary>
-        /// <param name="ruleSet">The RuleSet to Add</param>
+        /// <param name="newRule">The Rule to Add to the listening list</param>
         /// <returns></returns>
-        public EventClient Add(Rule ruleSet)
+        public AppEventsClient Add(Rule newRule)
         {
-            _rules.Add(ruleSet);
+            _rules.Add(newRule);
             return this;
         }
 
@@ -94,18 +131,18 @@ namespace AppEvents
         /// <param name="eventName">The event name to fire</param>
         /// <param name="runRules">Weather or not the Rules should be run</param>
         /// <returns></returns>
-        public EventClient Fire(string eventName, bool runRules = true, bool saveStore = true)
+        public AppEventsClient Fire(string eventName, bool runRules = true, bool saveStore = true)
         {
             _eventStore.Fire(eventName);
 
             if (runRules)
             {
-                RunRules();
+                Run();
             }
 
             if (saveStore)
             {
-                SaveEventStore();
+                SaveStore();
             }
 
             return this;
@@ -116,7 +153,7 @@ namespace AppEvents
         /// </summary>
         /// <param name="ruleName">Name of the rule to run</param>
         /// <returns></returns>
-        public EventClient RunRule(string ruleName)
+        public AppEventsClient Run(string ruleName)
         {
             var rule = _rules.SingleOrDefault(r => r.Name == ruleName);
             if (rule != null)
@@ -131,7 +168,7 @@ namespace AppEvents
         /// Runs all Rules in the list
         /// </summary>
         /// <returns></returns>
-        public EventClient RunRules()
+        public AppEventsClient Run()
         {
             //now check the rules
             foreach (var r in _rules)
@@ -162,7 +199,7 @@ namespace AppEvents
         }
 
         //Saves the EventStore if there is a Storage Provider set
-        public EventClient SaveEventStore()
+        public AppEventsClient SaveStore()
         {
             if (_storageProvider != null)
             {

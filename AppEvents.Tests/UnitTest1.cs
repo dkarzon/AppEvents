@@ -62,7 +62,7 @@ namespace AppEvents.Tests
         {
             //Load the EventStore from somewhere
             var eventStore = new EventStore();
-            AppEvents.EventClient.Current.LoadHistory(eventStore)
+            AppEvents.AppEventsClient.Current.LoadStore(eventStore)
                 //Add a rate-app Rule
                 .Add(
                     Rule.When("rate-app",
@@ -76,13 +76,13 @@ namespace AppEvents.Tests
             );
 
             //Fire some events
-            AppEvents.EventClient.Current.Fire("LiveTileOn")
+            AppEvents.AppEventsClient.Current.Fire("LiveTileOn")
                 .Fire("addedfavorite")
                 .Fire("addedfavorite")
                 .Fire("viewreport");
 
             //Now get the history and save it
-            eventStore = AppEvents.EventClient.Current.GetEventStore();
+            eventStore = AppEvents.AppEventsClient.Current.GetEventStore();
             //Save(eventStore);
         }
 

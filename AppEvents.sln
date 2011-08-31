@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppEvents.Tests", "AppEvent
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{114AE742-9C8C-4515-A113-5864ABF1DC08}"
 	ProjectSection(SolutionItems) = preProject
+		AppEvents.nuspec = AppEvents.nuspec
 		AppEvents.vsmdi = AppEvents.vsmdi
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings

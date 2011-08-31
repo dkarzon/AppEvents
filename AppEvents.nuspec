@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+	<metadata>
+		<id>AppEvents</id>
+		<version>0.1</version>
+		<authors>Damian Karzon</authors>
+		<owners>Damian Karzon</owners>
+		<description>.NET Event Client for the Windows Phone 7</description>
+		<language>en-AU</language>
+		<projectUrl>https://github.com/dkarzon/AppEvents</projectUrl>
+		<tags>WP7 WindowsPhone Achievements</tags>
+        <dependencies>
+            <dependency id="Newtonsoft.Json" />
+        </dependencies>
+	</metadata>
+	<files>
+		<file src="AppEvents\bin\Release\AppEvents.dll" target="lib\sl3-wp" />
+		<file src="AppEvents\bin\Release\AppEvents.dll" target="lib\sl4-WindowsPhone71" />
+	</files>
+</package>
