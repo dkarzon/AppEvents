@@ -10,9 +10,9 @@ namespace AppEvents.Tests
     /// Summary description for UnitTest1
     /// </summary>
     [TestClass]
-    public class UnitTest1
+    public class FluentTests
     {
-        public UnitTest1()
+        public FluentTests()
         {
 
         }
@@ -60,31 +60,9 @@ namespace AppEvents.Tests
         [TestMethod]
         public void TestMethod1()
         {
-            //Load the EventStore from somewhere
-            var eventStore = new EventStore();
-            AppEvents.AppEventsClient.New(
-                    Rule.When("rate-app",
-                    el => el.Fired("viewreport", 2) && el.Fired("addedfavorite", 2))
-                    .Do((r) => RateApp()));
-
-            //Fire some events
-            AppEvents.AppEventsClient.Current.Fire("LiveTileOn")
-                .Fire("addedfavorite")
-                .Fire("addedfavorite")
-                .Fire("viewreport");
-
-            //Now get the history and save it
-            eventStore = AppEvents.AppEventsClient.Current.GetEventStore();
-            //Save(eventStore);
+            //This is what I want, need to make it work now...
+            AppEventsClient.New("testevent1").When("page1", 5).And("page2", 2).AndNot("error").Do((r) => EventFired(r));
         }
 
-        private void RateApp()
-        {
-        }
-
-        private void Hi5(Rule rule)
-        {
-
-        }
     }
 }
