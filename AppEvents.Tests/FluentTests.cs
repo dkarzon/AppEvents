@@ -35,34 +35,50 @@ namespace AppEvents.Tests
             }
         }
 
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+		[TestMethod]
+		public void Basic_Function_Test()
+		{
+			var eventRun = false;
+			//This is what I want, need to make it work now...
+			AppEventsClient.New("testevent1").When("page1", 5).Do((r) => eventRun = true);
 
-        [TestMethod]
-        public void TestMethod1()
-        {
-            //This is what I want, need to make it work now...
-            AppEventsClient.New("testevent1").When("page1", 5).And("page2", 2).AndNot("error").Do((r) => EventFired(r));
-        }
+			//Clear the store
+			AppEventsClient.Current.LoadStore(new EventStore());
+			AppEventsClient.Current.Fire("page1");
+			AppEventsClient.Current.Fire("page1");
+			AppEventsClient.Current.Fire("page1");
+			AppEventsClient.Current.Fire("page1");
+
+			Assert.IsFalse(eventRun);
+			//This 1 should do the action
+			AppEventsClient.Current.Fire("page1");
+			Assert.IsTrue(eventRun);
+		}
+
+		[TestMethod]
+		public void And_Test()
+		{
+			//This is what I want, need to make it work now...
+			AppEventsClient.New("testevent1").When("page1", 5).And("page2", 2).Do((r) => EventFired(r));
+		}
+
+		[TestMethod]
+		public void And_Not_Test()
+		{
+			//This is what I want, need to make it work now...
+			AppEventsClient.New("testevent1").When("page1", 5).AndNot("page2", 2).Do((r) => EventFired(r));
+		}
+
+		[TestMethod]
+		public void Full_Test()
+		{
+			//This is what I want, need to make it work now...
+			AppEventsClient.New("testevent1").When("page1", 5).And("page2", 2).AndNot("error").Do((r) => EventFired(r));
+		}
+
+		private void EventFired(Rule rule)
+		{
+		}
 
     }
 }

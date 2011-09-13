@@ -60,22 +60,7 @@ namespace AppEventsSample
 
             ViewModel = new SampleViewModel();
 
-            AppEvents.AppEventsClient.New()
-                .Add(
-                    Rule.When("testrule1", el => el.Any(e => e.Name == "testevent1"))
-                    .Do(r =>
-                        MessageBox.Show(r.Name)
-                    ))
-                .Add(
-                    Rule.When("testrule2", el => el.Any(e => e.Name == "testevent2" && e.Occurrrences.Count > 2))
-                    .Do(r =>
-                        MessageBox.Show(r.Name)
-                    ))
-                .Add(
-                    Rule.When("testrule3", el => el.Any(e => e.Name == "testevent3"))
-                    .Do(r =>
-                        MessageBox.Show(r.Name)
-                    ));
+
         }
 
         // Code to execute when the application is launching (eg, from Start)

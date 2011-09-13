@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace AppEvents
 {
@@ -18,29 +19,64 @@ namespace AppEvents
         [EditorBrowsable(EditorBrowsableState.Never)]
         public string Name { get; private set; }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public Func<UserEventList, bool> Operation { get; private set; }
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public List<Func<UserEventList, bool>> Operations { get; private set; }
 
         public Action<Rule> Action { get; private set; }
 
-        private Rule(string name, Func<UserEventList, bool> op)
-        {
-            Name = name;
-            Operation = op;
-        }
+		private Rule()
+		{
+			Operations = new List<Func<UserEventList,bool>>();
+		}
 
-        /// <summary>
-        /// Creates a RuleSet with the given name and operation
-        /// </summary>
-        /// <param name="ruleName">Name of the Rule (Used for tracking)</param>
-        /// <param name="op">Operation to determine when the rules action should be executed</param>
-        /// <returns></returns>
-        public static Rule When(string ruleName, Func<UserEventList, bool> op)
-        {
-            var ruleset = new Rule(ruleName, op);
+		public Rule(string name) : this()
+		{
+			Name = name;
+		}
 
-            return ruleset;
-        }
+		public Rule When(string eventName, int count = 1)
+		{
+			//TODO - this part is not quite right yet...
+			Func<UserEventList, bool> op = el => el.Any(e => e.Name == eventName && e.Occurrrences.Count >= count);
+
+			Operations.Add(op);
+
+			return this;
+		}
+
+		public Rule When(Func<UserEventList, bool> op)
+		{
+			Operations.Add(op);
+
+			return this;
+		}
+
+		public Rule And(string eventName, int count = 1)
+		{
+			//TODO - this part is not quite right yet...
+			Func<UserEventList, bool> op = el => el.Any(e => e.Name == eventName && e.Occurrrences.Count >= count);
+
+			Operations.Add(op);
+
+			return this;
+		}
+
+		public Rule And(Func<UserEventList, bool> op)
+		{
+			Operations.Add(op);
+
+			return this;
+		}
+
+		public Rule AndNot(string eventName, int count = 1)
+		{
+			//TODO - What was I thinking?
+			Func<UserEventList, bool> op = el => !el.Any(e => e.Name == eventName && e.Occurrrences.Count >= count);
+
+			Operations.Add(op);
+
+			return this;
+		}
 
         /// <summary>
         /// Adds the action to the RuleSet for the Client to execute
@@ -53,5 +89,14 @@ namespace AppEvents
 
             return this;
         }
+
+		internal bool RunOperations(UserEventList eventList)
+		{
+			foreach (var op in Operations)
+			{
+				if (!op(eventList)) return false;
+			}
+			return true;
+		}
     }
 }

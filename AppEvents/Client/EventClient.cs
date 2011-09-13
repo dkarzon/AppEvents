@@ -6,17 +6,39 @@ namespace AppEvents
 {
     public class AppEventsClient : IHideObjectMembers
     {
-        public static AppEventsClient Current;
+        public static AppEventsClient Current = new AppEventsClient();
 
         private IEventStorageProvider _storageProvider;
-        private EventStore _eventStore;
-        private List<Rule> _rules;
+        private EventStore EventStore;
+        private List<Rule> Rules;
 
         private AppEventsClient()
         {
-            _rules = new List<Rule>();
-            _eventStore = new EventStore();
+            Rules = new List<Rule>();
+            EventStore = new EventStore();
         }
+
+		private AppEventsClient(bool loadStore) : this()
+		{
+			if (loadStore)
+			{
+				FromStorage(new JsonStorageProvider());
+			}
+		}
+
+		public static Rule New(string name)
+		{
+			if (Current == null)
+			{
+				Current = new AppEventsClient();
+			}
+
+			var rule = new Rule(name);
+
+			Current.Rules.Add(rule);
+
+			return rule;
+		}
 
         /// <summary>
         /// Sets the Current instance of the EventClient
@@ -90,7 +112,7 @@ namespace AppEvents
         {
             if (eventStore != null)
             {
-                _eventStore = eventStore;
+                EventStore = eventStore;
             }
 
             return this;
@@ -105,10 +127,10 @@ namespace AppEvents
         {
             _storageProvider = storageProvider;
             //try getting the EventStore
-            _eventStore = _storageProvider.LoadEventStore();
-            if (_eventStore == null)
+            EventStore = _storageProvider.LoadEventStore();
+            if (EventStore == null)
             {
-                _eventStore = new EventStore();
+                EventStore = new EventStore();
             }
 
             return this;
@@ -121,7 +143,7 @@ namespace AppEvents
         /// <returns></returns>
         public AppEventsClient Add(Rule newRule)
         {
-            _rules.Add(newRule);
+            Rules.Add(newRule);
             return this;
         }
 
@@ -133,7 +155,7 @@ namespace AppEvents
         /// <returns></returns>
         public AppEventsClient Fire(string eventName, bool runRules = true, bool saveStore = true)
         {
-            _eventStore.Fire(eventName);
+            EventStore.Fire(eventName);
 
             if (runRules)
             {
@@ -149,13 +171,13 @@ namespace AppEvents
         }
 
         /// <summary>
-        /// Manually run a specific RuleSet
+        /// Manually run a specific Rule
         /// </summary>
-        /// <param name="ruleName">Name of the rule to run</param>
+        /// <param name="ruleName">Name of the rule to try run</param>
         /// <returns></returns>
         public AppEventsClient Run(string ruleName)
         {
-            var rule = _rules.SingleOrDefault(r => r.Name == ruleName);
+            var rule = Rules.SingleOrDefault(r => r.Name == ruleName);
             if (rule != null)
             {
                 RunRule(rule);
@@ -171,7 +193,7 @@ namespace AppEvents
         public AppEventsClient Run()
         {
             //now check the rules
-            foreach (var r in _rules)
+            foreach (var r in Rules)
             {
                 RunRule(r);
             }
@@ -186,14 +208,14 @@ namespace AppEvents
         private void RunRule(Rule r)
         {
             //Make sure it hasn't been run before
-            if (!_eventStore.UserRules.Any(ur => ur.RuleName == r.Name))
+            if (!EventStore.UserRules.Any(ur => ur.RuleName == r.Name))
             {
                 //try run the rule
-                if (r.Operation(_eventStore.UserEvents))
+                if (r.RunOperations(EventStore.UserEvents))
                 {
                     //success!
                     r.Action(r);
-                    _eventStore.UserRules.Add(new UserRule { RuleName = r.Name, Executed = DateTime.Now });
+                    EventStore.UserRules.Add(new UserRule { RuleName = r.Name, Executed = DateTime.Now });
                 }
             }
         }
@@ -203,7 +225,7 @@ namespace AppEvents
         {
             if (_storageProvider != null)
             {
-                _storageProvider.SaveEventStore(_eventStore);
+                _storageProvider.SaveEventStore(EventStore);
             }
 
             return this;
@@ -215,7 +237,7 @@ namespace AppEvents
         /// <returns></returns>
         public EventStore GetEventStore()
         {
-            return _eventStore;
+            return EventStore;
         }
 
     }
